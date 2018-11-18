@@ -20,6 +20,8 @@ UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t 
     /* Set frame format: stop_bit, data_bits */
     UCSR0C = (parity)|(sb)|(db);
 
+    UCSR0C = (parity<<UPM00)|(sb<<USBS0)|(db<<UCSZ00);
+
     // Set double speed
     UCSR0A = (double_speed << U2X0);
 

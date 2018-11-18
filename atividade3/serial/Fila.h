@@ -19,6 +19,11 @@
 #include <string.h>
 
 template <typename T, int capacidade> class Fila {
+
+private:
+    int itens, inicio, fim;
+    T buffer[capacidade];
+
 public:
 
 	Fila() {
@@ -60,7 +65,6 @@ public:
 	}
 
 
-
     void inverte() {
         int tamanhoFila = tamanho();
         T valoresTemp[tamanhoFila];
@@ -94,9 +98,7 @@ public:
     	}
 
 
-    private:
-        int itens, inicio, fim;
-        T buffer[capacidade];
+
 };
 
 #endif /* FILA_H_ */
