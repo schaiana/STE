@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include "Singleton.h"
 #include "Fila.h"
-
-typedef Fila<uint8_t, 30> Fila;
+typedef Fila<uint8_t, 30> FILA;
+#define FOSC 16000000
 
 class UART : public Singleton<UART> {
 public:
@@ -35,17 +35,17 @@ public:
     UART(uint16_t baud, DataBits_t db, Parity_t par, StopBit_t sb, uint8_t double_speed=0);
     ~UART();
     void put(uint8_t data);
-    void puts(char* data);
+    void puts(char const * data);
     uint8_t get();
     bool has_data();
 
-    //Handles de interrupção
+    //Handlers de interrupção
     static void rx_isr_handler();
     static void tx_isr_handler();
 
 private:
-    Fila rx_buffer;
-    Fila tx_buffer;
+    FILA rx_buffer;
+    FILA tx_buffer;
 };
 
 #endif /* UART_H_ */
