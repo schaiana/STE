@@ -9,6 +9,7 @@
 #define TIMER_H_
 
 #include "Singleton.h"
+#include "Timeout.h"
 
 typedef unsigned long Hertz;
 typedef unsigned long long Microseconds;
@@ -35,6 +36,8 @@ public:
 
 	void delay(Milliseconds ms);
 	void udelay(Microseconds us);
+	void timeoutManager();
+	bool addTimeout(uint32_t interval, Timeout::CALLBACK_t callback);
 
 	static void ovf_isr_handler();
 
@@ -42,13 +45,8 @@ private:
 	unsigned long long _ticks;
 	unsigned int _timer_base;
 	Microseconds _us_per_tick;
+	Timeout::Timeout _timeouts[4];
+	uint32_t _timeout_counter;
 };
 
 #endif /* TIMER_H_ */
-
-
-
-
-
-
-

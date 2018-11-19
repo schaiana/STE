@@ -18,7 +18,7 @@ UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t 
     UCSR0B = (1<<RXEN0)|(1<<TXEN0)| (1 << RXCIE0);
 
     /* Set frame format: stop_bit, data_bits */
-   
+
     UCSR0C = (parity<<UPM00)|(sb<<USBS0)|(db<<UCSZ00);
 
     // Set double speed

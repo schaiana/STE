@@ -6,11 +6,13 @@
  */
 
 #include "Timer.h"
+#include "Timeout.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+using namespace Timeout;
 Timer::Timer(Hertz freq)
-: _ticks(0), _timer_base(0), _us_per_tick(0)
+: _ticks(0), _timer_base(0), _us_per_tick(0), _timeout_counter(0)
 {
 	static const unsigned int Timer_Top = 0xFF;
 
@@ -96,4 +98,20 @@ ISR(TIMER0_OVF_vect) { Timer::ovf_isr_handler(); }
 void Timer::ovf_isr_handler() {
 	TCNT0  = self()->_timer_base;
 	self()->_ticks++;
+}
+
+bool Timer::addTimeout(uint32_t interval, CALLBACK_t callback)
+{
+	if (_timeout_counter > 3) return 0;
+
+	_timeouts[_timeout_counter].config(interval, callback);
+	_timeout_counter++;
+	return 1;
+}
+
+void Timer::timeoutManager() {
+	for(uint32_t i=0;i<_timeout_counter;i++) {
+		if (_timeouts[i].event())
+		_timeouts[i].callback();
+	}
 }
