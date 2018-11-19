@@ -1,5 +1,5 @@
 /*
- * ExtInt.h
+ * EXTINT.h
  *
  *  Author: Layssa Pacheco e Schaiana Sonaglio
  */
@@ -36,13 +36,13 @@ class EXTINT {
 			RISING = 3
 		};
 
-		ExtInt(INT_ID_t id, ISC_t cfg, CALLBACK_t pCallback);
-		~ExtInt();
+		EXTINT(INT_ID_t id, ISC_t cfg, CALLBACK_t pCallback);
+		~EXTINT();
 		void enable();
 		void disable();
 		void callback();
 
-		ExtInt _ExtInt_singletons[8];
+		//EXTINT _EXTINT_singletons[8];
 
 		private:
 			uint8_t _id;
