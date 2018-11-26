@@ -11,8 +11,10 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-CALLBACK_t _pcallback[8];
-uint8_t _id;
+//CALLBACK_t _pcallback[8];
+//uint8_t _id;
+
+EXTINT::EXTINT instance;
 
 void EXTINT::enable(){
 	sei();
@@ -25,7 +27,8 @@ void EXTINT::disable(){
 }
 
 void EXTINT::callback(){
-	(*_pcallback[_id])(); //ponteiro para o m�todo definido atrav�s
+	(instance.*_pcallback[_id])(void);
+//	(*_pcallback[_id])(); //ponteiro para o m�todo definido atrav�s
 }
 
 EXTINT::EXTINT(INT_ID_t id, ISC_t cfg, CALLBACK_t pCallback){
@@ -38,7 +41,7 @@ EXTINT::EXTINT(INT_ID_t id, ISC_t cfg, CALLBACK_t pCallback){
 	//setar interrup��o
 	if (id < 4){
 		EICRA = cfg;
-		EICRA = 0b00000000;
+		EICRB = 0b00000000;
 	} else {
 		EICRB = cfg;
 		EICRA = 0b00000000;
@@ -53,34 +56,18 @@ EXTINT::EXTINT(INT_ID_t id, ISC_t cfg, CALLBACK_t pCallback){
 
 EXTINT::~EXTINT(){}
 
-ISR(INT0_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT0_vect) { callback(); }
 
-ISR(INT1_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT1_vect) { callback(); }
 
-ISR(INT2_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT2_vect) { callback(); }
 
-ISR(INT3_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT3_vect) { callback(); }
 
-ISR(INT4_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT4_vect) { callback(); }
 
-ISR(INT5_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT5_vect) { callback(); }
 
-ISR(INT6_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT6_vect) { callback(); }
 
-ISR(INT7_vect) {
-	(*_pcallback[_id])();
-}
+ISR(INT7_vect) { callback(); }

@@ -71,12 +71,12 @@ int main( void ){
 	int7_obj.enable();
 */
 	sei();
+	
 	while(1){                                   /* forever */
 		if (uart.has_data()){
 			uart.put(uart.get());                 /* echo the received character */
 			uart.put((EICRA));
 		}
-	}
-
+	
 	return 0;
 }
