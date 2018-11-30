@@ -5,7 +5,7 @@
 #include "Singleton.h"
 #include "Fila.h"
 
-UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t double_speed)
+UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t Double_Speed)
 {
 
 
@@ -22,7 +22,7 @@ UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t 
     UCSR0C = (parity<<UPM00)|(sb<<USBS0)|(db<<UCSZ00);
 
     // Set double speed
-    UCSR0A = (double_speed << U2X0);
+    UCSR0A = (Double_Speed << U2X0);
 
     tx_buffer.limpa_fila();
     rx_buffer.limpa_fila();
