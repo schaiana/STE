@@ -5,27 +5,28 @@
 #include "Singleton.h"
 #include "Fila.h"
 
-UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t Double_Speed)
+UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t double_speed)
 {
 
 
     /* Set baud rate */
-    UBRR0 = F_CPU/16/baud-1;
-    UBRR0H = (unsigned char)(UBRR0>>8);
-    UBRR0L = (unsigned char)UBRR0;
+    UBRR0 =  F_CPU/16/baud-1;
+    //UBRR0H = (unsigned char)(UBRR0>>8);
+    //UBRR0L = (unsigned char)UBRR0;
 
     /* Enable receiver and transmitter */
     UCSR0B = (1<<RXEN0)|(1<<TXEN0)| (1 << RXCIE0);
 
     /* Set frame format: stop_bit, data_bits */
 
-    UCSR0C = (parity<<UPM00)|(sb<<USBS0)|(db<<UCSZ00);
+    //UCSR0C = (parity<<UPM00)|(sb<<USBS0)|(db<<UCSZ00);
+    UCSR0C = parity|sb|db;
 
     // Set double speed
-    UCSR0A = (Double_Speed << U2X0);
+    UCSR0A = (double_speed << U2X0);
 
-    tx_buffer.limpa_fila();
-    rx_buffer.limpa_fila();
+    //tx_buffer.limpa_fila();
+    //rx_buffer.limpa_fila();
 }
 
 UART::~UART() {
@@ -33,7 +34,7 @@ UART::~UART() {
 }
 
 void UART::put(uint8_t data) {
-	while (tx_buffer.cheia());
+	//while (tx_buffer.cheia());
 
     tx_buffer.enfileira(data);
     UCSR0B |= (1 << UDRIE0);
@@ -58,9 +59,12 @@ ISR(USART0_RX_vect){
 	UART::rx_isr_handler();
 }
 
-ISR(USART0_TX_vect){
+
+ISR(USART0_UDRE_vect){
 	UART::tx_isr_handler();
 }
+
+
 
 void UART::rx_isr_handler() {
 	if (self()-> rx_buffer.cheia()) return;

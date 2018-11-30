@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "Singleton.h"
 #include "Fila.h"
-typedef Fila<uint8_t, 30> FILA;
+typedef Fila<unsigned char> FILA;
 #define FOSC 16000000
 
 class UART : public Singleton<UART> {
@@ -32,7 +32,7 @@ public:
 		DS_DISABLE = 0
     };
 
-    UART(uint16_t baud, DataBits_t db, Parity_t par, StopBit_t sb, uint8_t Double_Speed=0);
+    UART(uint16_t baud, DataBits_t db, Parity_t par, StopBit_t sb, uint8_t double_speed=0);
     ~UART();
     void put(uint8_t data);
     void puts(char const * data);

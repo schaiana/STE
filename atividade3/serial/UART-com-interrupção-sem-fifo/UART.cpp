@@ -33,7 +33,7 @@ uint8_t UART::get() {
     return this->_rx_buffer;
 }
 
-bool UART::has_data( ) {
+bool UART::has_data() {
     return this->_new_data;
 }
 
