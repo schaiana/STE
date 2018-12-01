@@ -11,7 +11,7 @@ void toogle_led() {
 }
 
 int main(void) {
-
+	cli();
     DDRE &= ~(1 << DDE5);
     DDRH |= (1 << DDH5);
 

@@ -3,6 +3,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#define F_CPU 16000000
+
 using namespace Timeout;
 Timer::Timer(Hertz freq)
 : _ticks(0), _timer_base(0), _us_per_tick(0), _timeout_counter(0)
