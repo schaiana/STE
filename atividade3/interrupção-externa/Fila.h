@@ -11,8 +11,8 @@
  * Created on 8 de Abril de 2016, 11:05
  */
 
-#ifndef FILA_H
-#define FILA_H
+#ifndef FILA2_H
+#define FILA2_H
 
 #include <stdio.h>
 #include <stdlib.h>

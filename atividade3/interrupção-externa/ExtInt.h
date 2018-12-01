@@ -14,7 +14,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-namespace EXTINT{
+//namespace EXTINT{
 
 	typedef void (*CALLBACK_t)(void);
 
@@ -44,11 +44,11 @@ namespace EXTINT{
 			void disable();
 			void callback();
 
-			//EXTINT _EXTINT_singletons[8];
+			static EXTINT * _EXTINT_singletons[8];
 
 			private:
 				uint8_t _id;
-				CALLBACK_t _pCallback[8] = {NULL};
+				CALLBACK_t _pCallback;
 	};
-};/* namespace EXTINT */
+//};/* namespace EXTINT */
 #endif /* EXTINT_H_ */

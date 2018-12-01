@@ -11,63 +11,57 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-//CALLBACK_t _pcallback[8];
-//uint8_t _id;
 
-EXTINT::EXTINT instance;
+EXTINT * EXTINT::_EXTINT_singletons[] = {NULL};
 
 void EXTINT::enable(){
-	sei();
+	cli();
 	EIMSK |= (1 << _id);
+	sei();
 }
 
 void EXTINT::disable(){
 	cli();
-	//	EIMSK &= ~(1 << _id);
+	EIMSK &= ~(1 << _id);
+	sei();
 }
 
 void EXTINT::callback(){
-	(instance.*_pcallback[_id])(void);
-//	(*_pcallback[_id])(); //ponteiro para o m�todo definido atrav�s
+	(*_pCallback)();
 }
 
 EXTINT::EXTINT(INT_ID_t id, ISC_t cfg, CALLBACK_t pCallback){
 	_id = id;
-	_pCallback[_id] = pCallback;
+	_pCallback = pCallback;
+	EXTINT::_EXTINT_singletons[_id] = this;
+	cli();
+	
 
-	//desabilitar interrup��es
-	disable();
-
-	//setar interrup��o
+	//setar interrupcao
 	if (id < 4){
-		EICRA = cfg;
-		EICRB = 0b00000000;
+		EICRA |= (cfg<<(id*2));
 	} else {
-		EICRB = cfg;
-		EICRA = 0b00000000;
+		EICRB |= (cfg<<((id-4)*2));
 	}
 
-	//habilitar interrup��o
-	enable();
-
-	//que que isso mesmo?
 	EIFR |= (1 << _id);
+	sei();
 }
 
 EXTINT::~EXTINT(){}
 
-ISR(INT0_vect) { callback(); }
+ISR(INT0_vect) { EXTINT::_EXTINT_singletons[0]->callback(); }
 
-ISR(INT1_vect) { callback(); }
+ISR(INT1_vect) { EXTINT::_EXTINT_singletons[1]->callback(); }
 
-ISR(INT2_vect) { callback(); }
+ISR(INT2_vect) { EXTINT::_EXTINT_singletons[2]->callback(); }
 
-ISR(INT3_vect) { callback(); }
+ISR(INT3_vect) { EXTINT::_EXTINT_singletons[3]->callback(); }
 
-ISR(INT4_vect) { callback(); }
+ISR(INT4_vect) { EXTINT::_EXTINT_singletons[4]->callback(); }
 
-ISR(INT5_vect) { callback(); }
+ISR(INT5_vect) { EXTINT::_EXTINT_singletons[5]->callback(); }
 
-ISR(INT6_vect) { callback(); }
+ISR(INT6_vect) { EXTINT::_EXTINT_singletons[6]->callback(); }
 
-ISR(INT7_vect) { callback(); }
+ISR(INT7_vect) { EXTINT::_EXTINT_singletons[7]->callback(); }

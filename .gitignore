@@ -4,3 +4,11 @@ atividade3/pcint/Debug/
 atividade3/pcint/\.vs/PCINT_SL/v14/\.atsuo
 
 atividade3/serial/UART-com-interrupção-com-fifo-puts-double-speed/Debug/
+
+atividade3/interrupção-externa/Debug/
+
+atividade3/interrupção-externa/\.vs/interrupcao-externa/v14/\.atsuo
+
+*.atsln
+
+atividade3/serial/UART-com-interrupção-com-fifo-puts-double-speed/\.vs/UART_FIFO/v14/\.atsuo

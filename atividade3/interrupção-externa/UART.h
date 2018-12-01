@@ -4,7 +4,9 @@
 #include <stdint.h>
 #include "Singleton.h"
 #include "Fila.h"
-typedef Fila<uint8_t, 30> FILA;
+typedef Fila<unsigned char, 100> FILA;
+#define FOSC 16000000
+
 
 class UART : public Singleton<UART> {
 	public:
