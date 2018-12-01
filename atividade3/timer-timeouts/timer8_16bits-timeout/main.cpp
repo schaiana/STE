@@ -12,9 +12,8 @@ void toogle_led() {
 
 int main(void) {
 
-    // Set input and output ports
-    DDRE &= ~(1 << DDE5);				// Set 0 to DDRE5 (PE5)
-    DDRH |= (1 << DDH5);				// Set 1 to DDRH5 (PH5)
+    DDRE &= ~(1 << DDE5);
+    DDRH |= (1 << DDH5);
 
 	Timer timer = Timer(1000);
 	timer.addTimeout(2000, &toogle_led);
@@ -23,7 +22,6 @@ int main(void) {
     while (true) {
 
     	timer.timeoutManager();
-    	//toogle_led();
     	_delay_ms(100);
 
     }

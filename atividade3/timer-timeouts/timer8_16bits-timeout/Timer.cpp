@@ -1,10 +1,3 @@
-/*
- * Timer.cpp
- *
- *  Created on: 24 de mar de 2017
- *      Author: aluno
- */
-
 #include "Timer.h"
 #include "Timeout.h"
 #include <avr/io.h>

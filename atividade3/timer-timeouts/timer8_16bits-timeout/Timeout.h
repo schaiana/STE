@@ -1,10 +1,3 @@
-/*
- * Timeout.h
- *
- *  Created on: 18 de out de 2018
- *      Author: aluno
- */
-
 #ifndef TIMEOUT_H_
 #define TIMEOUT_H_
 #include <stdint.h>
