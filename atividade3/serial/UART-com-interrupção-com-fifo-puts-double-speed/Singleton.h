@@ -3,14 +3,14 @@
 
 template<typename T>
 class Singleton {
-public:
-    Singleton() { _singleton = static_cast<T*>(this); }
-    ~Singleton() { _singleton = 0; }
+	public:
+	Singleton() { _singleton = static_cast<T*>(this); }
+	~Singleton() { _singleton = 0; }
 
-    static T * self() { return _singleton; }
+	static T * self() { return _singleton; }
 
-private:
-    static T * _singleton;
+	private:
+	static T * _singleton;
 };
 
 template<typename T>

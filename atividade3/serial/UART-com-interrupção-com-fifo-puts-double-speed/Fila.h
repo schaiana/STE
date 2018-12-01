@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-template <typename T, int capacidade> class Fila2 {
+template <typename T, int capacidade> class Fila {
 
 private:
     int itens, inicio, fim;

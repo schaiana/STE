@@ -5,54 +5,54 @@
 #include "Singleton.h"
 #include "Fila.h"
 
+#define F_CPU 16000000
+
 UART::UART(uint16_t baud, DataBits_t db, Parity_t parity, StopBit_t sb, uint8_t double_speed)
 {
+	/* Set baud rate */
+	UBRR0 =  F_CPU/16/baud-1;
+	//UBRR0H = (unsigned char)(UBRR0>>8);
+	//UBRR0L = (unsigned char)UBRR0;
 
+	/* Enable receiver and transmitter */
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0)| (1 << RXCIE0);
 
-    /* Set baud rate */
-    UBRR0 =  F_CPU/16/baud-1;
-    //UBRR0H = (unsigned char)(UBRR0>>8);
-    //UBRR0L = (unsigned char)UBRR0;
+	/* Set frame format: stop_bit, data_bits */
 
-    /* Enable receiver and transmitter */
-    UCSR0B = (1<<RXEN0)|(1<<TXEN0)| (1 << RXCIE0);
+	//UCSR0C = (parity<<UPM00)|(sb<<USBS0)|(db<<UCSZ00);
+	UCSR0C = parity|sb|db;
 
-    /* Set frame format: stop_bit, data_bits */
+	// Set double speed
+	UCSR0A = (double_speed << U2X0);
 
-    //UCSR0C = (parity<<UPM00)|(sb<<USBS0)|(db<<UCSZ00);
-    UCSR0C = parity|sb|db;
-
-    // Set double speed
-    UCSR0A = (double_speed << U2X0);
-
-    //tx_buffer.limpa_fila();
-    //rx_buffer.limpa_fila();
+	//tx_buffer.limpa_fila();
+	//rx_buffer.limpa_fila();
 }
 
 UART::~UART() {
-    //destrutor
+	//destrutor
 }
 
 void UART::put(uint8_t data) {
-	//while (tx_buffer.cheia());
+	while (tx_buffer.cheia()){};
 
-    tx_buffer.enfileira(data);
-    UCSR0B |= (1 << UDRIE0);
+	tx_buffer.enfileira(data);
+	UCSR0B |= (1 << UDRIE0);
 }
 
 void UART::puts(const char* data) {
-    for (int i=0;data[i]!=0;i++) put(data[i]);
+	for (int i=0;data[i]!=0;i++) put(data[i]);
 }
 
 uint8_t UART::get() {
-	while (rx_buffer.vazia());
+	while (rx_buffer.vazia()){};
 
 	uint8_t data = rx_buffer.desenfileira();
-    return data;
+	return data;
 }
 
 bool UART::has_data( ) {
-    return rx_buffer.tamanho();
+	return !rx_buffer.vazia();
 }
 
 ISR(USART0_RX_vect){
@@ -73,7 +73,7 @@ void UART::rx_isr_handler() {
 }
 
 void UART::tx_isr_handler() {
-
+	if(self()-> tx_buffer.vazia()) return;
 	UDR0 = self()-> tx_buffer.desenfileira();
 
 	if (self()-> tx_buffer.vazia())
