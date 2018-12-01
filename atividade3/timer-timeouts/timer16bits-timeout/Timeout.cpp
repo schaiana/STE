@@ -2,25 +2,17 @@
 
 namespace Timeout {
 
-Timeout::Timeout() : _event(0), _enable(0), _counter(0)
-{
-	// TODO Auto-generated constructor stub
+Timeout::Timeout() : _event(0), _enable(0), _counter(0){}
 
-}
+Timeout::~Timeout() {}
 
-Timeout::~Timeout() {
-	// TODO Auto-generated destructor stub
-}
-
-void Timeout::config(uint32_t interval, CALLBACK_t callback)
-{
+void Timeout::config(uint32_t interval, CALLBACK_t callback){
 	_enable = true;
 	_callback = callback;
 	_interval = interval;
 }
 
-void Timeout::checkTimeout()
-{
+void Timeout::checkTimeout() {
 	if (_enable) {
 		_counter++;
 		if (_counter == _interval) {
@@ -31,26 +23,23 @@ void Timeout::checkTimeout()
 
 }
 
-void Timeout::callback()
-{
+void Timeout::callback() {
 	if (_event and _enable) {
 		(*_callback)();
 		_event = false;
 	}
 }
 
-bool Timeout::event()
-{
+bool Timeout::event() {
 	return _event;
 }
 
-void Timeout::enable()
-{
+void Timeout::enable() {
 	_enable = true;
 }
 
-void Timeout::disable()
-{
+void Timeout::disable(){
 	_enable = false;
 }
+
 }

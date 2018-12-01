@@ -118,8 +118,7 @@ void Timer::ovf_isr_handler() {
 		self()->_timeouts[i].checkTimeout();
 }
 
-bool Timer::addTimeout(uint32_t interval, CALLBACK_t callback)
-{
+bool Timer::addTimeout(uint32_t interval, CALLBACK_t callback) {
 	if (_timeout_counter > 3) return 0;
 
 	_timeouts[_timeout_counter].config(interval, callback);
