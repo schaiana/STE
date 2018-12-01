@@ -5,43 +5,45 @@
  */ 
 
 #include <avr/interrupt.h>
-#include "EI_PCINT.h"
+#include "PCINT_SL.h"
 #include "UART.h"
 
-UART uart(19200, UART::EIGHT_DB, UART::NONE_PAR, UART::ONE_SB);
+UART uart(9600, UART::EIGHT_DB, UART::NONE_PAR, UART::ONE_SB, UART::DS_DISABLE);
+PCINT_SL pcint_sl = PCINT_SL();
 
-void int0_handler(void){
-	uart.put('0');
+void int4_handler(){
+	uart.puts("4\n");
 	return;
 }
 
-void int1_handler(void){
-	uart.put('1');
+void int9_handler(void){
+	uart.puts("9\n");
 	return;
 }
 
-void int2_handler(void){
-	uart.put('2');
+void int10_handler(void){
+	uart.puts("10\n");
+	return;
+}
+
+void int16_handler(void){
+	uart.puts("16\n");
 	return;
 }
 
 int main( void ){
+	pcint_sl.enable(PCINT_SL::PCINT_4, &int4_handler);
+	pcint_sl.enable(PCINT_SL::PCINT_9, &int9_handler);
+	pcint_sl.enable(PCINT_SL::PCINT_10, &int10_handler);
+	pcint_sl.enable(PCINT_SL::PCINT_16, &int16_handler);
 
-	EI_PCINT int0_obj(EI_PCINT::PCINT_0, &int0_handler);
-	EI_PCINT int1_obj(EI_PCINT::PCINT_1, &int1_handler);
-	EI_PCINT int2_obj(EI_PCINT::PCINT_2, &int2_handler);
-
-	int0_obj.enable();
-	int1_obj.enable();
-	int2_obj.enable();
-
-	sei();
-	while(1){                                   /* forever */
+	uart.puts("teste1234567890_teste1234567890\n");
+	while(1){
 		if (uart.has_data()){
-			uart.put(uart.get());                 /* echo the received character */
-//			uart.put((EICRA));
+			uart.put(uart.get());
+			//uart.puts("\n");
 		}
+		//_delay_ms(100);
 	}
-
 	return 0;
 }
