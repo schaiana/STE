@@ -5,18 +5,18 @@
 
 bool led_state = 0;
 void toogle_led() {
-	if (led_state) PORTH &= ~(1 << PH5);
-	else PORTH |= (1 << PH5);
+	if (led_state) PORTB &= ~(1 << PB7);
+	else PORTB |= (1 << PB7);
 	led_state = !led_state;
 }
 
 int main(void) {
 	cli();
     DDRE &= ~(1 << DDE5);
-    DDRH |= (1 << DDH5);
+    DDRB |= (1 << DDB7);
 
 	Timer timer = Timer(1000);
-	timer.addTimeout(2000, &toogle_led);
+	timer.addTimeout(100, &toogle_led);
 	sei();
 
     while (true) {
