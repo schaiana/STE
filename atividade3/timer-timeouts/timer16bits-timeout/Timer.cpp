@@ -128,6 +128,7 @@ bool Timer::addTimeout(uint32_t interval, CALLBACK_t callback) {
 
 void Timer::timeoutManager() {
 	for(uint32_t i=0;i<_timeout_counter;i++) {
+		_timeouts[i].checkTimeout();// Linha adicionada
 		if (_timeouts[i].event())
 		_timeouts[i].callback();
 	}

@@ -9,6 +9,8 @@ typedef unsigned long Hertz;
 typedef unsigned long long Microseconds;
 typedef unsigned long long Milliseconds;
 
+#define F_CPU 16000000
+
 class Timer : public Singleton<Timer> {
 public:
 
