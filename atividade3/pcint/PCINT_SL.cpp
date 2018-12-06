@@ -12,6 +12,7 @@
 
 CALLBACK_t PCINT_SL::_pCallback[] = {NULL};
 uint8_t PCINT_SL::portHist[] = {0};
+uint8_t PCINT_SL::pinsChanged[] = {0};
 
 //uint8_t EI_PCINT::porthistory[3];
 //uint8_t EI_PCINT::changedbits;
@@ -59,35 +60,34 @@ void PCINT_SL::callback(uint8_t PCINTx){
 	uint8_t i = 0;
 	
 	if(PCINTx == 0){
-		changedbits = PINB ^ portHist[0];
-		for (i=0; i<8; i++){
-			if((changedbits & (1<<i)) == (1<<i)) {
-				if(_pCallback[i]!=NULL){
-					(*_pCallback[i])();
-				}
-			}
-		}
+		changedbits = (PINB ^ portHist[0]) & PCMSK0;
+		pinsChanged[0] |= changedbits;
 		portHist[0] = PINB;
 	} else if(PCINTx == 1){
-	    changedbits = ((PINJ << 1) | ((PINE & (1 << PINE0))<<7)) ^ portHist[1];
-		for (i=0; i<8; i++){
-			if((changedbits & (1<<i)) == (1<<i)) {
-				if(_pCallback[i+8]!=NULL)
-					(*_pCallback[i+8])();
-			}
-		}
-	    portHist[1] = ((PINJ << 1) | ((PINE & (1 << PINE0))<<7));
+	    changedbits = (((PINJ << 1) | ((PINE & (1 << PINE0))<<7)) ^ portHist[1]) & PCMSK1;
+		pinsChanged[1] |= changedbits;
+	    portHist[1] = ((PINJ << 1) | ((PINE & (1 << PINE0))<<7)) & PCMSK2;
 	} else if(PCINTx == 2) {
 		changedbits = PINK ^ portHist[2];
-		for (i=0; i<8; i++){
-			if((changedbits & (1<<i)) == (1<<i)) {
-				if(_pCallback[i+16]!=NULL)
-					(*_pCallback[i+16])();
-			}
-		}
+		pinsChanged[2] |= changedbits;
 		portHist[2] = PINK;
 	}
 }
+
+void PCINT_SL::manager(){
+	int registrador,pino,nCallback;
+	
+	for(registrador=0; registrador<=2; registrador++){
+		for(pino=0;pino<=7;pino++){
+			if((pinsChanged[registrador]&(1<<pino))==(1<<pino)){
+				pinsChanged[registrador] &= ~(1<<pino);
+				nCallback = (registrador*8) + pino; 
+				(*_pCallback[nCallback])();
+			}
+		}
+	}
+};
+	
 
 PCINT_SL::~PCINT_SL(){}
 

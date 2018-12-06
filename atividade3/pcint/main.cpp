@@ -39,11 +39,12 @@ int main( void ){
 
 	uart.puts("teste1234567890_teste1234567890\n");
 	while(1){
-		if (uart.has_data()){
+		/*if (uart.has_data()){
 			uart.put(uart.get());
 			//uart.puts("\n");
-		}
-		//_delay_ms(100);
+		}*/
+		pcint_sl.manager();
+		_delay_ms(100);
 	}
 	return 0;
 }

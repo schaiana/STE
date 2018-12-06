@@ -53,9 +53,10 @@
 		void enable(uint8_t PCINTx, CALLBACK_t pCallback);
 		void disable(uint8_t PCINTx);
 		static void callback(uint8_t PCINTx);
+		void manager();
 
 		static uint8_t portHist[3];
-		//PCINT_ID_t _id;
+		static uint8_t pinsChanged[3];
 		static CALLBACK_t _pCallback[24];
 	};
 //};/* namespace EI_PCINT */
